@@ -109,7 +109,7 @@ MonoBehaviour:
   _characterController: {fileID: 1322997745913183041}
   _healthValue: 20
   _shootPoint: {fileID: 7125855275244568246}
-  _bulletSpeed: 5
+  _bulletSpeed: 15
 --- !u!1 &3708834047191179255
 GameObject:
   m_ObjectHideFlags: 0

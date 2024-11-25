@@ -32,8 +32,6 @@ public class PlayerController : MonoBehaviour, IDamagable
 
     private void Update()
     {
-        Debug.Log(_health.HealthValue);
-
         if (_health.HealthValue <= 0)
         {
             PlayerDied?.Invoke();

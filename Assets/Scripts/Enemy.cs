@@ -31,7 +31,7 @@ public class Enemy : MonoBehaviour, IDamagable
         if (_health.HealthValue <= 0)
         {
             EnemyDied?.Invoke();
-            Destroy(gameObject);
+            gameObject.SetActive(false);
         }
 
         Vector3 distance = _randomPoint - transform.position;
