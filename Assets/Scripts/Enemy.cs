@@ -31,6 +31,7 @@ public class Enemy : MonoBehaviour, IDamagable
         if (_health.HealthValue <= 0)
         {
             EnemyDied?.Invoke();
+            _health.UpdateHealth(_healthValue);
             gameObject.SetActive(false);
         }
 

@@ -33,4 +33,14 @@ public class Health
 
         _health -= value;
     }
+
+    public void UpdateHealth(int health)
+    {
+        if (health < 0)
+        {
+            return;
+        }
+
+        _health = health;
+    }
 }

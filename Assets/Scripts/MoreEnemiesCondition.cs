@@ -8,19 +8,22 @@ public class MoreEnemiesCondition : IGameCondition
     public event Action ConditionChanged;
 
     private int _enemyCountToLose;
-    private List<Enemy> _enemies;
+    private ObservableList<Enemy> _enemies;
     private int _enemyCount;
 
-    public MoreEnemiesCondition(int enemyCountToLose, List<Enemy> enemies)
+    public MoreEnemiesCondition(int enemyCountToLose, ObservableList<Enemy> enemies)
     {
         _enemyCountToLose = enemyCountToLose;
         _enemies = enemies;
-        _enemyCount = _enemies.Count;
+        _enemyCount = _enemies.List.Count;
 
-        foreach (Enemy enemy in enemies)
-        {
-            enemy.EnemyDied += OnEnemyDied;
-        }
+        _enemies.Added += OnEnemyAdded;
+    }
+
+    public void OnEnemyAdded(Enemy enemy)
+    {
+        _enemyCount += 1;
+        enemy.EnemyDied += OnEnemyDied;
     }
 
     public void OnEnemyDied()

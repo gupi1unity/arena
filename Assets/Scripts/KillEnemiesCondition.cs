@@ -7,19 +7,24 @@ public class KillEnemiesCondition : IGameCondition
 {
     public event Action ConditionChanged;
 
-    private List<Enemy> _enemies;
+    private ObservableList<Enemy> _enemies;
     private int _enemyCount;
 
-    public KillEnemiesCondition(List<Enemy> enemies)
+    private bool _isRunning = false;
+
+    public KillEnemiesCondition(ObservableList<Enemy> enemies)
     {
         _enemies = enemies;
+        _enemyCount = 0;
 
-        _enemyCount = _enemies.Count;
+        _enemies.Added += OnEnemyAdded;
+    }
 
-        foreach (Enemy enemy in _enemies)
-        {
-            enemy.EnemyDied += OnEnemyDied;
-        }
+    public void OnEnemyAdded(Enemy enemy)
+    {
+        _enemyCount += 1;
+        enemy.EnemyDied += OnEnemyDied;
+        _isRunning = true;
     }
 
     public void OnEnemyDied()
@@ -29,7 +34,7 @@ public class KillEnemiesCondition : IGameCondition
 
     public void Update()
     {
-        if (_enemyCount <= 0)
+        if (_enemyCount <= 0 && _isRunning == true)
         {
             ConditionChanged?.Invoke();
         }
