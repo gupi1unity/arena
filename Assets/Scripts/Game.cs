@@ -4,11 +4,10 @@ using UnityEngine;
 
 public class Game : MonoBehaviour
 {
-    private WinConditions _winConditions;
-    private LoseConditions _loseConditions;
-
     private IGameCondition _winCondition;
     private IGameCondition _loseCondition;
+
+    private ConditionFactory _conditionFactory;
 
     private float _timeToWin;
     private int _enemyCountToLose;
@@ -17,20 +16,15 @@ public class Game : MonoBehaviour
     private EnemySpawner _enemySpawner;
     private PlayerController _playerController;
 
-    public void Initialize(WinConditions winConditions, LoseConditions loseConditions, float timeToWin, int enemyCountToLose, ObservableList<Enemy> enemies, EnemySpawner enemySpawner, PlayerController playerController)
+    public void Initialize(ConditionFactory conditionFactory, EnemySpawner enemySpawner)
     {
-        _winConditions = winConditions;
-        _loseConditions = loseConditions;
-        _timeToWin = timeToWin;
-        _enemyCountToLose = enemyCountToLose;
-        _enemies = enemies;
+        _conditionFactory = conditionFactory;
         _enemySpawner = enemySpawner;
-        _playerController = playerController;
 
         _enemySpawner.StartSpawner();
 
-        DetermineWinCondition();
-        DetermineLoseCondition();
+        _winCondition = _conditionFactory.GetWinCondition();
+        _loseCondition = _conditionFactory.GetLoseCondition();
 
         Enable();
     }
@@ -65,31 +59,5 @@ public class Game : MonoBehaviour
     {
         _winCondition.ConditionChanged -= OnWinConditionChanged;
         _loseCondition.ConditionChanged -= OnLoseConditionChanged;
-    }
-
-    private void DetermineWinCondition()
-    {
-        switch (_winConditions)
-        {
-            case WinConditions.TimeToWin:
-                _winCondition = new TimeToWinCondition(_timeToWin);
-                break;
-            case WinConditions.KillEnemies:
-                _winCondition = new KillEnemiesCondition(_enemies);
-                break;
-        }
-    }
-
-    private void DetermineLoseCondition()
-    {
-        switch (_loseConditions)
-        {
-            case LoseConditions.PlayerDied:
-                _loseCondition = new PlayerDiedCondition(_playerController);
-                break;
-            case LoseConditions.MoreEnemies:
-                _loseCondition = new MoreEnemiesCondition(_enemyCountToLose, _enemies);
-                break;
-        }
     }
 }

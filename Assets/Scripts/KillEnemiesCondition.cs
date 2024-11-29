@@ -37,6 +37,17 @@ public class KillEnemiesCondition : IGameCondition
         if (_enemyCount <= 0 && _isRunning == true)
         {
             ConditionChanged?.Invoke();
+            Disable();
         }
+    }
+
+    private void Disable()
+    {
+        foreach (var enemy in _enemies.List)
+        {
+            enemy.EnemyDied -= OnEnemyDied;
+        }
+
+        _enemies.Added -= OnEnemyAdded;
     }
 }

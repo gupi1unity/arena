@@ -36,6 +36,17 @@ public class MoreEnemiesCondition : IGameCondition
         if (_enemyCount >= _enemyCountToLose)
         {
             ConditionChanged?.Invoke();
+            Disable();
         }
+    }
+
+    private void Disable()
+    {
+        foreach (var enemy in _enemies.List)
+        {
+            enemy.EnemyDied -= OnEnemyDied;
+        }
+
+        _enemies.Added -= OnEnemyAdded;
     }
 }

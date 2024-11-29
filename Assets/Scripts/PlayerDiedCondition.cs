@@ -28,6 +28,7 @@ public class PlayerDiedCondition : IGameCondition
         if (_isPlayerDied == true)
         {
             ConditionChanged?.Invoke();
+            _playerController.PlayerDied -= OnPlayerDied;
         }
     }
 }

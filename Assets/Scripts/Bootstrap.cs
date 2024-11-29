@@ -21,6 +21,7 @@ public class Bootstrap : MonoBehaviour
     [SerializeField] private LoseConditions _loseConditions;
     [SerializeField] private float _timeToWin;
     [SerializeField] private int _enemyCountToLose;
+    private ConditionFactory _conditionFactory;
 
     private void Awake()
     {
@@ -42,6 +43,8 @@ public class Bootstrap : MonoBehaviour
         _playerController = playerPrefab.GetComponent<PlayerController>();
         _playerController.Initialize(_bulletFactory);
 
-        _gameLogic.Initialize(_winConditions, _loseConditions, _timeToWin, _enemyCountToLose, _enemies, _enemySpawner, _playerController);
+        _conditionFactory = new ConditionFactory(_winConditions, _loseConditions, _timeToWin, _enemyCountToLose, _enemies, _playerController);
+
+        _gameLogic.Initialize(_conditionFactory, _enemySpawner);
     }
 }
